@@ -8,16 +8,20 @@ import VerifiedPage from './verified-page';
 import { getUser } from '@/services/api-services';
 
 const IdentityVerification = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isVerified, setIsVerified] = useState(false);
   const [hasVerificationError, setHasVerificationError] = useState(false);
 
   useEffect(() => {
     const userInfo = async () => {
-      const {
-        data: { profile }
-      } = await getUser();
-      setIsVerified(profile?.isIdVerified ?? false);
+      try {
+        const {
+          data: { profile }
+        } = await getUser();
+        setIsVerified(profile?.isIdVerified ?? false);
+      } finally {
+        setLoading;
+      }
     };
 
     userInfo();

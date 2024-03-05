@@ -1,9 +1,12 @@
-import { stackMiddlewares } from './lib/middlewares/stack-middlewares';
-import { authCheckUpdateSession } from './lib/middlewares/auth-check-middleware';
-import { userRoleMiddleware } from './lib/middlewares/user-role-middleware';
 
-export default stackMiddlewares([authCheckUpdateSession, userRoleMiddleware]);
+import { type NextRequest } from 'next/server';
+import { authCheckUpdateSession } from './lib/supabase/auth-check-middleware';
 
+
+
+export async function middleware(request: NextRequest) {
+    return await authCheckUpdateSession(request);
+}
 
 export const config = {
     matcher: [
@@ -12,7 +15,9 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * Feel free to modify this pattern to include more paths.
+         * - signin/*
+         * - auth
+         * - unauthorized
          */
         "/((?!_next/static|_next/image|favicon.ico|signin|auth|unauthorized|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
     ],

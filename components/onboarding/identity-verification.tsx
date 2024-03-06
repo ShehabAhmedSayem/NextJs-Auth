@@ -20,7 +20,7 @@ const IdentityVerification = () => {
         } = await getUser();
         setIsVerified(profile?.isIdVerified ?? false);
       } finally {
-        setLoading;
+        setLoading(false);
       }
     };
 
